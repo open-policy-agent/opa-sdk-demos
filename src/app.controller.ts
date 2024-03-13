@@ -1,16 +1,12 @@
 import { Controller, Request, Get, Post, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './auth/local-auth.guard';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { AuthService } from './auth/auth.service';
-import { Public } from './auth/decorators';
-import { AuthzService } from './authz/authz.service';
+import { Public } from './auth/decorators/public';
+import { Authz } from './authz/decorators/action';
 
 @Controller()
 export class AppController {
-  constructor(
-    private authService: AuthService,
-    private authzService: AuthzService,
-  ) {}
+  constructor(private authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
   @Public() // So global JWT guard doesn't prohibit logins
@@ -20,6 +16,7 @@ export class AppController {
   }
 
   @Get('profile')
+  @Authz({ action: 'read', resource: 'profile' })
   getProfile(@Request() req) {
     return req.user;
   }

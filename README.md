@@ -13,6 +13,9 @@ $ npm install
 ## Running the app
 
 ```bash
+# default env variables, corresponding to http://127.0.0.1:8181/v1/data/cats/allow
+cp example.env .env
+
 # development
 $ npm run start
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Opa } from 'opa/sdk';
-import { authorizer } from 'opa/helpers';
+import { authorizer } from 'opa/sdk/helpers';
 
 @Injectable()
 export class AuthzService {

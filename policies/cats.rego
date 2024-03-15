@@ -11,4 +11,3 @@ allow := allowed(input.user, input.action, input.resource)
 allowed(user, _, _) if user, "admin" in roles
 allowed(_, "get", _)
 allowed(_, "list", _)
-allowed(_, "read", "profile")

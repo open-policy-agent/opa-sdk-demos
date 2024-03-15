@@ -2,9 +2,10 @@ import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
-import { Authz } from '../authz/decorators/action';
+import { Authz, Query as AuthzQuery } from '../authz/decorators/action';
 
 @Controller('cats')
+@AuthzQuery('cats/allow')
 export class CatsController {
   constructor(private catsService: CatsService) {}
 

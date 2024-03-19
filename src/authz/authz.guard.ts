@@ -24,7 +24,7 @@ export class AuthzGuard implements CanActivate {
 
     const authzProps = this.reflector.getAllAndMerge<Record<string, any>>(
       AUTHZ_PROPERTY,
-      [context.getHandler(), context.getClass()],
+      [context.getClass(), context.getHandler()],
     );
     if (!authzProps) {
       return true; // no authz data attached, nothing to query OPA for

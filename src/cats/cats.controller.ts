@@ -6,11 +6,12 @@ import { Authz, Query as AuthzQuery } from '../authz/decorators/action';
 
 @Controller('cats')
 @AuthzQuery('cats/allow')
+@Authz({ resource: 'cat' })
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Post()
-  @Authz({ action: 'create', resource: 'cat' })
+  @Authz({ action: 'create' })
   async create(@Body() createCatDto: CreateCatDto) {
     this.catsService.create(createCatDto);
   }
@@ -22,7 +23,7 @@ export class CatsController {
   }
 
   @Get(':name')
-  @Authz({ action: 'get', resource: 'cat' })
+  @Authz({ action: 'get' })
   async findByName(@Param('name') name: string): Promise<Cat> {
     return this.catsService.findByName(name);
   }

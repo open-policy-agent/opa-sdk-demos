@@ -29,12 +29,8 @@ $ npm run start:prod
 ## Start OPA with the example policies
 
 ```bash
-opa run --server policies/cats.rego
+opa run --server policies
 ```
-
-**Note** The AuthzService in this Nest project doesn't take any
-outside configuration at this point (TODO) -- so it expects OPA to run
-on http://127.0.0.1:8181.
 
 ## Run some HTTP calls
 

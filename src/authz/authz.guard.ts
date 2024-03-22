@@ -1,9 +1,15 @@
-import { Injectable, ExecutionContext, CanActivate } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AuthzService } from './authz.service';
+import { Reflector } from '@nestjs/core';
+
 import { IS_PUBLIC_KEY } from '../auth/decorators/public';
-import { AUTHZ_PROPERTY, AUTHZ_PATH } from './decorators/action';
+import { AuthzService } from './authz.service';
+import {
+  AUTHZ_PATH,
+  AUTHZ_PROPERTY,
+  AUTHZ_EXTRA,
+  Request,
+} from './decorators/action';
 
 @Injectable()
 export class AuthzGuard implements CanActivate {
@@ -22,13 +28,20 @@ export class AuthzGuard implements CanActivate {
       return true;
     }
 
+    const request = context.switchToHttp().getRequest();
+
     const authzProps = this.reflector.getAllAndMerge<Record<string, any>>(
       AUTHZ_PROPERTY,
       [context.getClass(), context.getHandler()],
     );
-    if (!authzProps) {
-      return true; // no authz data attached, nothing to query OPA for
-    }
+
+    const authzExtra = this.reflector.getAll<
+      ((_: Request) => Record<string, any>)[]
+    >(AUTHZ_EXTRA, [context.getClass(), context.getHandler()]);
+    const extra = authzExtra.reduce(
+      (acc, add) => (add ? { ...acc, ...add(request) } : acc),
+      {},
+    );
 
     const authzPath =
       this.reflector.getAllAndOverride<string>(AUTHZ_PATH, [
@@ -36,12 +49,11 @@ export class AuthzGuard implements CanActivate {
         context.getClass(),
       ]) || this.configService.getOrThrow('OPA_PATH');
 
-    const request = context.switchToHttp().getRequest();
-    const user = request.user;
     return await this.authzService.authorize(
       {
         ...authzProps,
-        user: user.username,
+        ...extra,
+        user: request.user.username, // TODO(sr): make this configurable
       },
       authzPath,
     );

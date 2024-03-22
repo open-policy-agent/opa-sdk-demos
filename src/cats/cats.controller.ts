@@ -2,16 +2,16 @@ import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { CatsService } from './cats.service';
 import { Cat } from './interfaces/cat.interface';
-import { Authz, Query as AuthzQuery } from '../authz/decorators/action';
+import { Authz, Extra, Query as AuthzQuery } from '../authz/decorators/action';
 
 @Controller('cats')
 @AuthzQuery('cats/allow')
-@Authz({ resource: 'cat' })
+@Extra(() => ({ resource: 'cat' }))
 export class CatsController {
   constructor(private catsService: CatsService) {}
 
   @Post()
-  @Authz({ action: 'create' })
+  @Extra(({ body: { name } }) => ({ name, action: 'create' }))
   async create(@Body() createCatDto: CreateCatDto) {
     this.catsService.create(createCatDto);
   }
@@ -23,7 +23,11 @@ export class CatsController {
   }
 
   @Get(':name')
-  @Authz({ action: 'get' })
+  @Extra(({ params, session }) => ({
+    ...params,
+    session,
+    action: 'get',
+  }))
   async findByName(@Param('name') name: string): Promise<Cat> {
     return this.catsService.findByName(name);
   }

@@ -2,7 +2,7 @@ import { Controller, Request, Get, Post, UseGuards } from '@nestjs/common';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
 import { Public } from './auth/decorators/public';
-import { Authz, Query as AuthzQuery } from './authz/decorators/action';
+import { AuthzStatic, Query as AuthzQuery } from './authz/decorators/action';
 
 @Controller()
 export class AppController {
@@ -16,7 +16,7 @@ export class AppController {
   }
 
   @Get('profile')
-  @Authz({ action: 'read', resource: 'profile' })
+  @AuthzStatic({ action: 'read', resource: 'profile' })
   @AuthzQuery('profile/allow')
   getProfile(@Request() req) {
     return req.user;

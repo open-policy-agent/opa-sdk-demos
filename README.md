@@ -8,10 +8,10 @@ Based on the [Nest](https://github.com/nestjs/nest) framework TypeScript starter
 
 ### Static key/val pairs
 
-Use the `Extra` decorator to add static information to the request payload sent to OPA:
+Use the `Authz` decorator to add static information to the request payload sent to OPA:
 
 ```ts
-@Extra(() => ({ resource: 'cat' }))
+@Authz(() => ({ resource: 'cat' }))
 ```
 
 on either the _class_ or the _handler_ method will add
@@ -21,6 +21,20 @@ on either the _class_ or the _handler_ method will add
 ```
 
 to each request payload.
+
+There's a `AuthzStatic()` variant that lets you condense this to
+
+```ts
+@Authz({ resource: 'cat' })
+```
+
+Feel free to
+
+```ts
+import { AuthzStatic as Authz } from '../authz/decorators/action';
+```
+
+if the dynamic functionality isn't required.
 
 ### Forward request body
 
@@ -32,7 +46,7 @@ POST /cats
 The entire request body can be forwarded:
 
 ```ts
-@Extra(({ body }) => body)
+@Authz(({ body }) => body)
 ```
 
 ```json
@@ -46,7 +60,7 @@ The entire request body can be forwarded:
 Note that we can also add a static part to this:
 
 ```ts
-@Extra(({ body }) => ({ ...body, action: 'create' }))
+@Authz(({ body }) => ({ ...body, action: 'create' }))
 ```
 
 ```json
@@ -61,7 +75,7 @@ Note that we can also add a static part to this:
 It's also possible to select just parts of the body:
 
 ```ts
-@Extra(({ body: { name } }) => ({ name, action: 'create' }))
+@Authz(({ body: { name } }) => ({ name, action: 'create' }))
 ```
 
 ```json
@@ -74,7 +88,7 @@ It's also possible to select just parts of the body:
 If you want to put the body into some key on the payload, use
 
 ```ts
-@Extra(({ body }) => ({ payload: body }))
+@Authz(({ body }) => ({ payload: body }))
 ```
 
 ```json
@@ -91,7 +105,7 @@ Route parameters can also be injected:
 
 ```ts
 @Get(':name')
-@Extra(({ params }) => ({ ...params, action: 'get' }))
+@Authz(({ params }) => ({ ...params, action: 'get' }))
 async findByName(@Param('name') name: string): Promise<Cat> {
   return this.catsService.findByName(name);
 }
@@ -106,19 +120,19 @@ async findByName(@Param('name') name: string): Promise<Cat> {
 
 ### More Request Details
 
-Under the hood, the `@Extra` decorator registers functions that (optionally) take a `Request` parameter.
+Under the hood, the `@Authz` decorator registers functions that (optionally) take a `Request` parameter.
 See [the NestJS docs for all the fields that you can use](https://docs.nestjs.com/controllers#request-object).
 
 Pass along the client IP via
 
 ```ts
-@Extra(({ ip }) => ({ ip }))
+@Authz(({ ip }) => ({ ip }))
 ```
 
 Or one specific header,
 
 ```ts
-@Extra(({ headers: { 'x-user': u } }) => ({
+@Authz(({ headers: { 'x-user': u } }) => ({
   ['x-user']: u,
 }))
 ```

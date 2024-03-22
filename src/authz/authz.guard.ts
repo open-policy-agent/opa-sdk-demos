@@ -4,12 +4,7 @@ import { Reflector } from '@nestjs/core';
 
 import { IS_PUBLIC_KEY } from '../auth/decorators/public';
 import { AuthzService } from './authz.service';
-import {
-  AUTHZ_PATH,
-  AUTHZ_PROPERTY,
-  AUTHZ_EXTRA,
-  Request,
-} from './decorators/action';
+import { AUTHZ_PATH, AUTHZ_EXTRA, Request } from './decorators/action';
 
 @Injectable()
 export class AuthzGuard implements CanActivate {
@@ -30,11 +25,6 @@ export class AuthzGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
 
-    const authzProps = this.reflector.getAllAndMerge<Record<string, any>>(
-      AUTHZ_PROPERTY,
-      [context.getClass(), context.getHandler()],
-    );
-
     const authzExtra = this.reflector.getAll<
       ((_: Request) => Record<string, any>)[]
     >(AUTHZ_EXTRA, [context.getClass(), context.getHandler()]);
@@ -51,7 +41,6 @@ export class AuthzGuard implements CanActivate {
 
     return await this.authzService.authorize(
       {
-        ...authzProps,
         ...extra,
         user: request.user.username, // TODO(sr): make this configurable
       },

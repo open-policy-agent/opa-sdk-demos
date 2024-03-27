@@ -25,7 +25,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^10.0.3",
-    "@nestjs/platform-express": "^10.3.5",
+    "@nestjs/platform-express": "^10.3.6",
     "opa": "github:StyraInc/opa-typescript",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",

@@ -137,6 +137,51 @@ Or one specific header,
 }))
 ```
 
+## Response payload mapping
+
+Use the `@Decision` and `@DecisionStatic` decorators to instruct the AuthzGuard on how to get a boolean decision from the OPA response:
+
+```ts
+@DecisionStatic('allowed')
+```
+
+will use the `allow` field of an object response. So if `POST /v1/data/cats/result` returns
+
+```json
+{
+  "allowed": true,
+  "details": []
+}
+```
+
+the AuthzGuard will use the `allowed` field to make the decision.
+
+The same be achieved using a non-static `@Decision` decorator:
+
+```ts
+@Decision((r) => r['allowed'])
+```
+
+Note that you can also pass a function, like
+
+```ts
+function pluckAllow(r: any): boolean {
+  return r['allow'];
+}
+```
+
+via
+
+```ts
+@Decision(pluckAllow)
+```
+
+You can use all of the result for the decision, for example
+
+```ts
+@Decision((r) => r.violations.length == 0)
+```
+
 ## Installation
 
 ```bash

@@ -4,7 +4,27 @@ import { Reflector } from '@nestjs/core';
 
 import { IS_PUBLIC_KEY } from '../auth/decorators/public';
 import { AuthzService } from './authz.service';
-import { AUTHZ_PATH, AUTHZ_EXTRA, Request } from './decorators/action';
+import {
+  AUTHZ_EXTRA,
+  AUTHZ_DECISION,
+  AUTHZ_PATH,
+  Request,
+} from './decorators/action';
+import { Input, ToInput, Result } from 'opa/highlevel';
+
+class InputPayload implements ToInput {
+  private input: Input;
+  constructor(extra: ((_: Request) => Record<string, any>)[], req: Request) {
+    this.input = extra.reduce(
+      (acc, add) => (add ? { ...acc, ...add(req) } : acc),
+      { user: req.user.username },
+    );
+  }
+
+  toInput(): Input {
+    return this.input;
+  }
+}
 
 @Injectable()
 export class AuthzGuard implements CanActivate {
@@ -24,13 +44,12 @@ export class AuthzGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-
-    const authzExtra = this.reflector.getAll<
-      ((_: Request) => Record<string, any>)[]
-    >(AUTHZ_EXTRA, [context.getClass(), context.getHandler()]);
-    const extra = authzExtra.reduce(
-      (acc, add) => (add ? { ...acc, ...add(request) } : acc),
-      {},
+    const inp = new InputPayload(
+      this.reflector.getAll<((_: Request) => Record<string, any>)[]>(
+        AUTHZ_EXTRA,
+        [context.getClass(), context.getHandler()],
+      ),
+      request,
     );
 
     const authzPath =
@@ -39,12 +58,10 @@ export class AuthzGuard implements CanActivate {
         context.getClass(),
       ]) || this.configService.getOrThrow('OPA_PATH');
 
-    return await this.authzService.authorize(
-      {
-        ...extra,
-        user: request.user.username, // TODO(sr): make this configurable
-      },
-      authzPath,
+    const fromResult = this.reflector.getAllAndOverride<(_: Result) => boolean>(
+      AUTHZ_DECISION,
+      [context.getHandler(), context.getClass()],
     );
+    return await this.authzService.authorize(inp, authzPath, fromResult);
   }
 }

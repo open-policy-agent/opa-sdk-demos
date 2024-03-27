@@ -5,6 +5,7 @@ import { Cat } from './interfaces/cat.interface';
 import {
   Authz,
   AuthzStatic,
+  Decision,
   Query as AuthzQuery,
 } from '../authz/decorators/action';
 
@@ -27,6 +28,11 @@ export class CatsController {
   }
 
   @Get(':name')
+  @AuthzQuery('cats') // For illustration, we're querying the package extent
+  // These are all equivalent here:
+  // @DecisionStatic('allow')
+  // @Decision((r) => r['allow'])
+  @Decision(pluckAllow)
   @Authz(({ params: { name } }) => ({
     name,
     action: 'get',
@@ -34,4 +40,8 @@ export class CatsController {
   async findByName(@Param('name') name: string): Promise<Cat> {
     return this.catsService.findByName(name);
   }
+}
+
+function pluckAllow(r: Record<string, unknown>): boolean {
+  return r['allow'] as boolean;
 }

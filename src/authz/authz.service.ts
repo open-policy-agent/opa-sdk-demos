@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { OPA, Result } from 'opa/highlevel';
+import { OPAClient, Result } from '@styra/opa';
 
 @Injectable()
 export class AuthzService {
-  private opa: OPA;
+  private opa: OPAClient;
 
   constructor(private configService: ConfigService) {
-    this.opa = new OPA(this.configService.getOrThrow('OPA_URL'));
+    this.opa = new OPAClient(this.configService.getOrThrow('OPA_URL'));
   }
 
   async authorize(

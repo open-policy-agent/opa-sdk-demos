@@ -1,6 +1,6 @@
 import { SetMetadata } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
-import { Result } from 'opa/highlevel';
+import { Result } from '@styra/opa';
 
 export interface Request extends ExpressRequest {
   user?: any;

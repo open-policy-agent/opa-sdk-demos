@@ -10,7 +10,7 @@ import {
   AUTHZ_PATH,
   Request,
 } from './decorators/action';
-import { Input, ToInput, Result } from 'opa/highlevel';
+import { Input, ToInput, Result } from '@styra/opa';
 
 class InputPayload implements ToInput {
   private input: Input;

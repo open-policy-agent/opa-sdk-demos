@@ -26,7 +26,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.3.7",
-    "@styra/opa": "^0.2.5",
+    "@styra/opa": "^0.2.6",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",

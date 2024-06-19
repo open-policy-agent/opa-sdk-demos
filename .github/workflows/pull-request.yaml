@@ -9,13 +9,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
-    name: Test
+  api:
+    name: Test API
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: setup
+        run: docker compose up --quiet-pull --wait --wait-timeout 300
+      - name: hurl
+        run: docker compose run --quiet-pull integration-tests
+      - name: dump logs
+        run: docker compose logs
+        if: failure()
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: always()
         with:
-          node-version: 21
-      - name: build
-        run: npm ci
+          check_name: Results
+          report_paths: tests/api/report.xml

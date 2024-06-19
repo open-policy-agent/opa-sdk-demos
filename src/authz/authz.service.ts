@@ -15,6 +15,6 @@ export class AuthzService {
     path: string,
     fromResult?: (_?: Result) => boolean,
   ): Promise<boolean> {
-    return await this.opa.authorize(path, inp, fromResult);
+    return await this.opa.evaluate(path, inp, { fromResult });
   }
 }

@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 
-import { IS_PUBLIC_KEY } from '../auth/decorators/public';
+import { IS_PUBLIC_KEY } from '../authn/decorators/public';
 import { AuthzService } from './authz.service';
 import {
   AUTHZ_EXTRA,

@@ -1,7 +1,7 @@
 import { Controller, Request, Get, Post, UseGuards } from '@nestjs/common';
-import { LocalAuthGuard } from './auth/local-auth.guard';
-import { AuthService } from './auth/auth.service';
-import { Public } from './auth/decorators/public';
+import { LocalAuthGuard } from './authn/local-auth.guard';
+import { AuthService } from './authn/auth.service';
+import { Public } from './authn/decorators/public';
 import { AuthzStatic, Query as AuthzQuery } from './authz/decorators/action';
 
 @Controller()

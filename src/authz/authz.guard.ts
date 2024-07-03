@@ -2,7 +2,6 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 
-import { IS_UNAUTHENTICATED_KEY } from '../authn/decorators/public';
 import { AuthzService } from './authz.service';
 import {
   AUTHZ_EXTRA,
@@ -17,7 +16,7 @@ class InputPayload implements ToInput {
   constructor(extra: ((_: Request) => Record<string, any>)[], req: Request) {
     this.input = extra.reduce(
       (acc, add) => (add ? { ...acc, ...add(req) } : acc),
-      { user: req.user.username },
+      { user: req.user?.username },
     );
   }
 
@@ -35,14 +34,6 @@ export class AuthzGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext) {
-    const isUnauthenticated = this.reflector.getAllAndOverride<boolean>(
-      IS_UNAUTHENTICATED_KEY,
-      [context.getHandler(), context.getClass()],
-    );
-    if (isUnauthenticated) {
-      return true;
-    }
-
     const request = context.switchToHttp().getRequest();
     const inp = new InputPayload(
       this.reflector.getAll<((_: Request) => Record<string, any>)[]>(

@@ -1,4 +1,4 @@
-package profile
+package hello
 
 import rego.v1
 

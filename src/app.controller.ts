@@ -11,6 +11,7 @@ export class AppController {
   @UseGuards(LocalAuthGuard)
   @Unauthenticated() // So global JWT guard doesn't prohibit logins
   @Post('auth/login')
+  @AuthzQuery('login/allow')
   async login(@Request() req) {
     return this.authService.login(req.user);
   }
@@ -24,6 +25,7 @@ export class AppController {
 
   @Get('hello')
   @Unauthenticated()
+  @AuthzQuery('hello/allow')
   getInfo() {
     return { hello: 'world' };
   }

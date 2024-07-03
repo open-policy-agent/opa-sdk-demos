@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Reflector } from '@nestjs/core';
 
-import { IS_PUBLIC_KEY } from '../authn/decorators/public';
+import { IS_UNAUTHENTICATED_KEY } from '../authn/decorators/public';
 import { AuthzService } from './authz.service';
 import {
   AUTHZ_EXTRA,
@@ -35,11 +35,11 @@ export class AuthzGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext) {
-    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-      context.getHandler(),
-      context.getClass(),
-    ]);
-    if (isPublic) {
+    const isUnauthenticated = this.reflector.getAllAndOverride<boolean>(
+      IS_UNAUTHENTICATED_KEY,
+      [context.getHandler(), context.getClass()],
+    );
+    if (isUnauthenticated) {
       return true;
     }
 

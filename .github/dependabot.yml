@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/examples/opa-react-demo/"
+    directory: "opa-react-demo/"
     schedule:
       interval: "daily"
   - package-ecosystem: github-actions

@@ -1,9 +1,6 @@
 # `@styra/opa-react` Demos
 
-This React application is showcasing specific features of `@styra/opa-react`.
-
-Currently, it includes a demo of batching requests when used with [Enterprise OPA](https://docs.styra.com/enterprise-opa),
-or a custom implementation of its [Batch API](https://docs.styra.com/enterprise-opa/reference/api-reference/batch-api).
+This React application showcases the request batching feature of `@styra/opa-react` when used with the [Enterprise OPA Batch API](https://docs.styra.com/enterprise-opa/reference/api-reference/batch-api).
 
 ## How to use
 

@@ -8,7 +8,7 @@ This React application showcases the request batching feature of `@styra/opa-rea
 
 1. Set `$EOPA_LICENSE_KEY`
 1. Run `docker compose up`
-1. Go to <http://127.0.0.1:3000>
+1. Go to <http://127.0.0.1:4000>
 
 ### Binaries
 

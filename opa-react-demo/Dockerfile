@@ -1,15 +1,11 @@
-FROM node:22
+FROM node:22 AS builder
 
-# Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-
-# Install app dependencies
-COPY package.json /usr/src/app/
-RUN npm install
-
-# Bundle app source
 COPY . /usr/src/app
+RUN npm ci
+RUN npm run build
 
-EXPOSE 3000
-CMD [ "npm", "start" ]
+FROM caddy:latest
+COPY --from=builder /usr/src/app/build /usr/share/caddy
+COPY Caddyfile /etc/caddy/Caddyfile

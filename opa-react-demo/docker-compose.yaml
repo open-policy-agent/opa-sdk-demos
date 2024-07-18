@@ -1,19 +1,13 @@
 services:
   react-demo:
     build: .
-    expose:
-    - 3000
+    ports:
+      - "4000:4000"
     depends_on:
       - eopa
-    command:
-      - npm
-      - start
-    network_mode: host
 
   eopa:
     image: ghcr.io/styrainc/enterprise-opa:latest
-    expose: 
-      - 8181
     ports:
       - "8181:8181"
     command:
@@ -22,7 +16,6 @@ services:
       - --addr=:8181
       - --log-level=debug
       - /policies
-    working_dir: /
     volumes:
       - ./policies:/policies
     environment:

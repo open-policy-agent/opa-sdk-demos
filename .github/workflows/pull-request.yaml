@@ -29,9 +29,8 @@ jobs:
       - uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version: 22
-      - name: setup and build
-        # https://github.com/npm/cli/issues/3034#issuecomment-885211061
+      - name: build and start
         run: |
-          npm ci
-          npm run build
+          docker compose up --build -d
+          docker compose down
         working-directory: ${{ matrix.pkg }}

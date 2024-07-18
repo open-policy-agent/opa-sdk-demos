@@ -23,7 +23,7 @@ export default function BatchDemo() {
   const [opaClient] = useState(() => {
     const href = window.location.toString();
     const u = new URL(href); // TODO(sr): better way?!
-    u.pathname = "";
+    u.pathname = "eopa";
     u.search = "";
     return new OPAClient(u.toString());
   });

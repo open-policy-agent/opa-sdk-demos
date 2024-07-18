@@ -1,0 +1,12 @@
+:4000 {
+    handle_path /eopa/* {
+        reverse_proxy http://eopa:8181
+    }
+
+    # serve the react app
+    handle {
+      root * /usr/share/caddy
+      try_files {path} /
+      file_server
+   }
+}

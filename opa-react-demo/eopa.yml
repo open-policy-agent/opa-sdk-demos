@@ -1,0 +1,8 @@
+services:
+- name: connect
+  url: http://connect:4195/post
+decision_logs:
+  service: connect
+  reporting:
+    min_delay_seconds: 0
+    max_delay_seconds: 1

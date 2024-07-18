@@ -1,0 +1,20 @@
+input:
+  broker:
+    inputs:
+    - http_server:
+        path: /post/logs
+      processors:
+      - decompress:
+          algorithm: gzip
+      - unarchive:
+          format: json_array
+
+buffer:
+  memory: {}
+
+output:
+  http_client:
+    url: http://portal:5678/submit
+    verb: POST
+    headers:
+      "Content-Type": application/json

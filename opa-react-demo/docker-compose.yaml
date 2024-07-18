@@ -15,8 +15,26 @@ services:
       - --server
       - --addr=:8181
       - --log-level=debug
+      - --config-file=/eopa.yml
       - /policies
     volumes:
       - ./policies:/policies
+      - ./eopa.yml:/eopa.yml
     environment:
       EOPA_LICENSE_KEY: ${EOPA_LICENSE_KEY}
+
+  portal:
+    build: portal
+    ports:
+      - "5678:5678"
+
+  connect:
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    ports:
+    - "4195:4195"
+    command:
+    - connect
+    - run
+    - /connect.yml
+    volumes:
+    - ./connect.yml:/connect.yml

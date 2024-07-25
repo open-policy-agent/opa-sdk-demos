@@ -24,7 +24,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
 	implementation 'org.springframework.security:spring-security-config'
 	implementation 'org.springframework.security:spring-security-web'
-	implementation group: 'com.styra.opa', name: 'springboot', version: '+'
+	implementation group: 'com.styra.opa', name: 'springboot', version: '0.0.4'
 	implementation group: 'com.styra', name: 'opa', version: '+'
 }
 

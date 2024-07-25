@@ -129,3 +129,20 @@ curl -LSs -X GET -H "Demo-User: eve" -H "Demo-Tenant: acmecorp" http://localhost
   "path": "/object/obj3"
 }
 ```
+
+*Objects prefixed with `legal_` or `accounting_` require the user to have a corresponding role. `alfred` has the `reader`, `writer`, and `accounting` roles, so he should be able to create and modify any type of object except those prefixed with `legal_`. We can verify this by creating and reading an `accounting_` object, and then attempting to create a `legal_` object and observing that the request fails.*
+
+```plain
+$ curl -LSs -X PUT -H "Content-Type: application/json" -H "Demo-User: alfred" -H "Demo-Tenant: acmecorp" --data '{"spam": "ham"}' http://localhost:8080/object/accounting_sheet123
+$ curl -LSs -X GET -H "Demo-User: alfred" -H "Demo-Tenant: acmecorp" http://localhost:8080/object/accounting_sheet123 | jq
+{
+  "spam": "ham"
+}
+$ curl -LSs -X PUT -H "Content-Type: application/json" -H "Demo-User: alfred" -H "Demo-Tenant: acmecorp" --data '{"spam": "ham"}' http://localhost:8080/object/legal_case123 | jq
+{
+  "timestamp": "2024-07-25T20:59:58.491+00:00",
+  "status": 403,
+  "error": "Forbidden",
+  "path": "/object/legal_case123"
+}
+```

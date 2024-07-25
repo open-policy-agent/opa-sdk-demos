@@ -7,10 +7,13 @@ roles := {
 		"alice": ["admin"],
 		"bob": ["writer"],
 		"eve": ["reader"],
+		"alfred": ["writer", "reader", "accounting"],
 	},
 	"globex": {
 		"alice": ["writer"],
 		"bob": ["reader"],
+		"janet": ["writer", "reader"],
+		"bill": ["writer", "reader", "legal"],
 	},
 }
 
@@ -58,15 +61,28 @@ invalid_user_tenant if {
 # Determine the roles assigned to the user.
 roles_for_user := roles[tenant][user]
 
-# Determine what role would be required to perform the specified action.
-role_for_action := r if {
+# Determine what role(s) would be required to perform the specified action.
+roles_for_action contains r if {
 	action == "read"
 	r := "reader"
 }
 
-role_for_action := r if {
+roles_for_action contains r if {
 	action == "write"
 	r := "writer"
+}
+
+roles_for_action contains r if {
+	# Allow the application to use context data injection to signal
+	# that extra roles are required.
+
+	r := input.context.data["extra-roles"][_]
+}
+
+# Determine what roles the user is missing that are required for the action.
+missing_roles contains r if {
+	r := roles_for_action[_]
+	not r in roles_for_user
 }
 
 # Default-deny.
@@ -102,16 +118,32 @@ main := dec if {
 			"reason_admin": {"en": "administrators may perform any action"},
 		},
 	}
-} else := dec if {
-	# If the user is not an admin, then to perform an action, they must have
-	# the role that goes with that action.
 
-	role_for_action in roles_for_user
+} else := dec if {
+	# This would be caught by our default deny case anyway, but we want to
+	# generate a more helpful reason_admin if the user is missing a role.
+
+	count(missing_roles) > 0
+
+	dec := {
+		"decision": false,
+		"context": {
+			"id": "missing-roles",
+			"reason_admin": {"en": sprintf("access denied due to missing roles %s", [concat(", ", missing_roles)])},
+		},
+	}
+
+} else := dec if {
+	# If the user is not an admin, then to perform an action, they may not
+	# be missing any required roles.
+
+	count(missing_roles) == 0
+
 	dec := {
 		"decision": true,
 		"context": {
 			"id": "granted-by-role",
-			"reason_admin": {"en": sprintf("access granted due to role %s", [role_for_action])},
+			"reason_admin": {"en": sprintf("access granted due to roles %s", [concat(", ", roles_for_action)])},
 		},
 	}
 }

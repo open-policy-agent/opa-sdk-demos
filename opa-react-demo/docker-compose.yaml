@@ -8,6 +8,7 @@ services:
 
   eopa:
     image: ghcr.io/styrainc/enterprise-opa:latest
+    pull_policy: always
     ports:
       - "8181:8181"
     command:

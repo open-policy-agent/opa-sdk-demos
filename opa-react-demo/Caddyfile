@@ -1,5 +1,5 @@
 :4000 {
-    handle_path /eopa/* {
+    handle /v1/* {
         reverse_proxy http://eopa:8181
     }
 

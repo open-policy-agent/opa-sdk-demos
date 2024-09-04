@@ -1,1 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite tests="2" errors="0" failures="0"><testcase id="/tests/api/basic.hurl" name="/tests/api/basic.hurl" time="0.135" /><testcase id="/tests/api/cats.hurl" name="/tests/api/cats.hurl" time="0.018" /></testsuite></testsuites>

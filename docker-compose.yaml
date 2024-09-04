@@ -30,7 +30,7 @@ services:
     entrypoint: sh
     command:
       - -c
-      - 'hurl --test --retry=10 --verbose --report-junit=tests/api/report.xml /tests/api/*.hurl'
+      - 'hurl --retry=10 --verbose --report-junit=tests/api/report.xml /tests/api/*.hurl'
     environment:
       - HURL_host=server:3000
     depends_on:

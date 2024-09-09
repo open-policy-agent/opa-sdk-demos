@@ -1,0 +1,39 @@
+services:
+  server:
+    build: .
+    environment:
+      - OPA_URL=http://opa:8181
+    depends_on:
+      - opa
+    expose:
+      - 3000
+
+  opa:
+    image: openpolicyagent/opa:latest
+    ports:
+      - '8181:8181'
+    command:
+      - run
+      - --server
+      - --addr=:8181
+      - --log-level=debug
+      - --bundle
+      - --disable-telemetry
+      - /policies
+    volumes:
+      - ./policies:/policies
+
+  integration-tests:
+    image: ghcr.io/orange-opensource/hurl:latest
+    volumes:
+      - ./tests:/tests:rw
+    entrypoint: sh
+    command:
+      - -c
+      - 'hurl --retry=10 --verbose --report-junit=tests/api/report.xml /tests/api/*.hurl'
+    environment:
+      - HURL_host=server:3000
+    depends_on:
+      - server
+    profiles:
+      - tools

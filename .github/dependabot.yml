@@ -4,6 +4,17 @@ updates:
     directory: "opa-react-demo/"
     schedule:
       interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "nestjs-demo/"
+    schedule:
+      interval: "daily"
+    groups:
+      nestjs:
+        patterns:
+          - "@nestjs/*"
+      typescript-eslint:
+        patterns:
+          - "@typescript-eslint/*"
   - package-ecosystem: github-actions
     directory: /
     schedule:

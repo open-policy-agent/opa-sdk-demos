@@ -40,7 +40,7 @@
     "@swc/cli": "^0.4.0",
     "@swc/core": "^1.7.39",
     "@types/express": "^5.0.0",
-    "@types/jest": "^29.5.13",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.7.9",
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",

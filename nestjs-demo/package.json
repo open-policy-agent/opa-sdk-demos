@@ -41,7 +41,7 @@
     "@swc/core": "^1.7.42",
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
-    "@types/node": "^22.8.6",
+    "@types/node": "^22.8.7",
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
     "@types/supertest": "^6.0.2",

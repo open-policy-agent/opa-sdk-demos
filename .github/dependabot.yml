@@ -4,6 +4,10 @@ updates:
     directory: "opa-react-demo/"
     schedule:
       interval: "daily"
+    groups:
+      react:
+        patterns:
+          - "react*"
   - package-ecosystem: "npm"
     directory: "nestjs-demo/"
     schedule:

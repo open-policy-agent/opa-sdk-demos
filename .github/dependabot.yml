@@ -5,20 +5,17 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      react:
+      all:
         patterns:
-          - "react*"
+          - "*"
   - package-ecosystem: "npm"
     directory: "nestjs-demo/"
     schedule:
       interval: "daily"
     groups:
-      nestjs:
+      all:
         patterns:
-          - "@nestjs/*"
-      typescript-eslint:
-        patterns:
-          - "@typescript-eslint/*"
+          - "*"
   - package-ecosystem: github-actions
     directory: /
     schedule:

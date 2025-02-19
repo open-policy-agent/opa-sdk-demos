@@ -12,11 +12,11 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.1",
     "css-select": "^5.1.0",
-    "postcss": "^8.5.1",
+    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-pixel-grid": "^0.1.2",
-    "react-router-dom": "^7.1.5",
+    "react-router-dom": "^7.2.0",
     "react-scripts": "^5.0.1",
     "resolve-url-loader": "^5.0.0"
   },

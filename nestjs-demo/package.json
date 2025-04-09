@@ -19,13 +19,13 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@nestjs/common": "^11.0.13",
+    "@nestjs/common": "^11.0.14",
     "@nestjs/config": "^4.0.2",
-    "@nestjs/core": "^11.0.13",
+    "@nestjs/core": "^11.0.14",
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/mapped-types": "*",
     "@nestjs/passport": "^11.0.5",
-    "@nestjs/platform-express": "^11.0.13",
+    "@nestjs/platform-express": "^11.0.14",
     "@styra/opa": "^1.7.9",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
@@ -36,7 +36,7 @@
   "devDependencies": {
     "@nestjs/cli": "^11.0.6",
     "@nestjs/schematics": "^11.0.4",
-    "@nestjs/testing": "^11.0.13",
+    "@nestjs/testing": "^11.0.14",
     "@swc/cli": "^0.6.0",
     "@swc/core": "^1.11.18",
     "@types/express": "^5.0.1",

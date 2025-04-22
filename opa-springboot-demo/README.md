@@ -116,12 +116,12 @@ $ curl -LSs -X GET -H "Demo-User: alice" -H "Demo-Tenant: acmecorp" http://local
 *`eve` should be able to read objects, but not modify them due to only having the `reader` role. We check this by having `eve` read the existing `obj2` object, then try to create an `obj3` object and verifying that it does not exist after we did so.*
 
 ```plain
-curl -LSs -X GET -H "Demo-User: eve" -H "Demo-Tenant: acmecorp" http://localhost:8080/object/obj2 | jq
+$ curl -LSs -X GET -H "Demo-User: eve" -H "Demo-Tenant: acmecorp" http://localhost:8080/object/obj2 | jq
 {
   "spam": "ham"
 }
-curl -LSs -X PUT -H "Content-Type: application/json" -H "Demo-User: eve" -H "Demo-Tenant: acmecorp" --data '{"bar": "baz"}' http://localhost:8080/object/obj3
-curl -LSs -X GET -H "Demo-User: eve" -H "Demo-Tenant: acmecorp" http://localhost:8080/object/obj3 | jq
+$ curl -LSs -X PUT -H "Content-Type: application/json" -H "Demo-User: eve" -H "Demo-Tenant: acmecorp" --data '{"bar": "baz"}' http://localhost:8080/object/obj3
+$ curl -LSs -X GET -H "Demo-User: eve" -H "Demo-Tenant: acmecorp" http://localhost:8080/object/obj3 | jq
 {
   "timestamp": "2024-07-24T19:36:58.088+00:00",
   "status": 404,

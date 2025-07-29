@@ -1,0 +1,77 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/server/node"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    groups:
+      prisma:
+        patterns:
+          - "*prisma*"
+  - package-ecosystem: "gradle"
+    directory: "/server/java"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    groups:
+      jackson:
+        patterns:
+          - "com.fasterxml.jackson*"
+      slf4j:
+        patterns:
+          - "org.slf4j:*"
+    ignore: # server/java doesn't compile when bumping these
+      - dependency-name: "org.eclipse.jetty:*"
+      - dependency-name: "org.glassfish.jersey.*"
+  - package-ecosystem: "gradle"
+    directory: "/server/springboot"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    groups:
+      jackson:
+        patterns:
+          - "com.fasterxml.jackson*"
+      slf4j:
+        patterns:
+          - "org.slf4j:*"
+  - package-ecosystem: "nuget"
+    directory: "/server/csharp"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    groups:
+      Microsoft:
+        patterns:
+          - "Microsoft*"
+      Npgsql:
+        patterns:
+          - "Npgsql*"
+  - package-ecosystem: "npm"
+    directory: "/client/react"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    groups:
+      react:
+        patterns:
+          - "react*"
+  - package-ecosystem: "npm"
+    directory: "/client/html"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+  - package-ecosystem: "npm"
+    directory: "/tests/e2e"
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 10
+    groups:
+      all:
+        patterns:
+          - "*"

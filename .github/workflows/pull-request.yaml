@@ -15,14 +15,14 @@ concurrency:
 
 jobs:
   examples:
-    name: build examples
+    name: Build Examples
     runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
         pkg:
-        - opa-react-demo
-        - nestjs-demo
+          - opa-react-demo
+          - nestjs-demo
     steps:
       - name: Check out code
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -45,3 +45,161 @@ jobs:
       - name: build and start
         run: docker compose down
         working-directory: ${{ matrix.pkg }}
+
+  # TicketHub CI:
+  tickethub-unit-test-policies:
+    name: TicketHub - Unit Test Policies
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - run: make test-policies
+        working-directory: tickethub/
+
+  tickethub-unit-test-react:
+    name: TicketHub - Node Packages
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        pkg: [opa-wasm]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "21.x"
+      - uses: open-policy-agent/setup-opa@34a30e8a924d1b03ce2cf7abe97250bbb1f332b5 # v2.2.0
+      - name: setup and test
+        run: |
+          npm ci
+          npm test
+        working-directory: tickethub/client/react/packages/${{ matrix.pkg }}
+
+  tickethub-build-clients:
+    name: TicketHub - Build Client
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        client: [html, react]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: build wasm bundle
+        run: |
+          curl -Lo eopa https://github.com/StyraInc/enterprise-opa/releases/download/v1.36.2/eopa_Linux_x86_64
+          chmod +x ./eopa
+          make client/react/public/opa.wasm
+        working-directory: tickethub/
+        env:
+          OPA: ./eopa
+        if: ${{ matrix.client == 'react' }}
+      - name: setup
+        run: docker compose --profile ${{ matrix.client }} up --quiet-pull --wait --wait-timeout 300 --build
+        working-directory: tickethub/
+        env:
+          EOPA_LICENSE_KEY: ${{ secrets.EOPA_LICENSE_KEY }}
+      - name: smoke test
+        run: curl --retry 5 --retry-connrefused --retry-max-time 120 http://127.0.0.1:3000 -v
+        working-directory: tickethub/
+
+  tickethub-test-e2e:
+    name: TicketHub - Test E2E
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        server: [node, csharp, aspnetcore, java, springboot]
+    steps:
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: setup
+        run: docker compose --profile ${{ matrix.server }} --profile react up --quiet-pull --wait --wait-timeout 300
+        working-directory: tickethub/
+        env:
+          EOPA_LICENSE_KEY: ${{ secrets.EOPA_LICENSE_KEY }}
+      - name: Install dependencies
+        run: npm ci
+        working-directory: tickethub/tests/e2e
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        working-directory: tickethub/tests/e2e
+      - name: Run Playwright tests
+        run: npx playwright test
+        working-directory: tickethub/tests/e2e
+        env:
+          FILTERS: ${{ matrix.server == 'node' || matrix.server == 'csharp' }}
+          REASONS: ${{ matrix.server == 'node' || matrix.server == 'java' }}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: always()
+        with:
+          name: playwright-report-${{ matrix.server }}
+          path: tickethub/tests/e2e/playwright-report/
+          retention-days: 7
+      - name: Run hurl API tests
+        run: docker compose run --quiet-pull integration-tests
+        working-directory: tickethub/
+        env:
+          HURL_SKIP_FILTERING: ${{ matrix.server != 'node' && matrix.server != 'csharp' }}
+          HURL_SKIP_MASKING: ${{ matrix.server != 'node' && matrix.server != 'csharp' }}
+      - name: dump logs
+        run: docker compose --profile ${{ matrix.server }} logs
+        working-directory: tickethub/
+        if: failure()
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@3585e9575db828022551b4231f165eb59a0e74e3 # v5.6.2
+        if: always()
+        with:
+          check_name: Results for server-${{ matrix.server }}
+          report_paths: tickethub/tests/api/report.xml
+
+  tickethub-test-e2e-batch:
+    name: TicketHub - Test E2E Batching
+    runs-on: ubuntu-24.04
+    env:
+      eopa_license: ${{ secrets.EOPA_LICENSE_KEY }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+        if: env.eopa_license != ''
+      - name: setup
+        run: docker compose --profile node --profile react up --quiet-pull --wait --wait-timeout 300
+        working-directory: tickethub/
+        env:
+          EOPA_LICENSE_KEY: ${{ secrets.EOPA_LICENSE_KEY }}
+        if: env.eopa_license != ''
+      - name: Install dependencies
+        run: npm ci
+        working-directory: tickethub/tests/e2e
+        if: env.eopa_license != ''
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        working-directory: tickethub/tests/e2e
+        if: env.eopa_license != ''
+      - name: Run Playwright tests
+        run: npx playwright test
+        working-directory: tickethub/tests/e2e
+        env:
+          BATCHING: true
+        if: env.eopa_license != ''
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: playwright-report-batching-node
+          path: tickethub/tests/e2e/playwright-report/
+          retention-days: 7
+        if: env.eopa_license != '' && always()
+      - name: dump logs
+        run: docker compose --profile node logs
+        working-directory: tickethub/
+        if: env.eopa_license != '' && always()

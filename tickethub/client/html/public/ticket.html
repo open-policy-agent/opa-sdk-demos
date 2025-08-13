@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Ticket</title>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+
+        <script type="module">
+            import { makeAuthHeader } from "/scripts/login.js";
+
+            async function displayTicket(id) {
+                const response = await fetch(`/api/tickets/${id}`, {headers: {Authorization: makeAuthHeader()}});
+                const ticket = await response.json();
+
+                document.getElementById("customer").textContent =
+                    ticket.customer;
+                document.getElementById("last_updated").textContent =
+                    ticket.last_updated;
+                document.getElementById("description").textContent =
+                    ticket.description;
+                document.getElementById("resolved").textContent =
+                    ticket.resolved ? "yes" : "no";
+                document.getElementById("ticket-resolve-button").textContent =
+                    `${ticket.resolved ? "Unresolve" : "Resolve"} ticket`;
+
+                if (response.status !== 200) {
+                    const messageContainer = document.getElementById("message");
+                    messageContainer.innerHTML = `\
+        <span class="update-status">Error: user unauthorized to access ticket: ${ticket.reason || 'no reason specified'}</span>`;
+                }
+
+                return ticket;
+            }
+
+            async function toggleResolved(event) {
+                event.preventDefault();
+
+                const resolved =
+                    document.getElementById("ticket-resolve-button")
+                        .textContent === "Resolve ticket";
+
+                const id = location.pathname.split("/").at(-1);
+                const response = await fetch(`/api/tickets/${id}/resolve`, {
+                    method: "POST",
+                    headers: { "content-type": "application/json", Authorization: makeAuthHeader() },
+                    body: JSON.stringify({ resolved }),
+                });
+
+                const messageContainer = document.getElementById("message");
+
+                var state = "UNKNOWN";
+
+                if (response.status === 200) {
+                    const ticket = await displayTicket(id);
+                    messageContainer.innerHTML = `\
+        Ticket updated:
+        <span class="update-status">
+          ${(state = ticket.resolved ? "unresolved → resolved" : "resolved → unresolved")}
+        </span>`;
+                } else {
+                    const ticket = await response.json();
+                    messageContainer.innerHTML = `\
+        <span class="update-status">Error: user unauthorized to perform operation: ${ticket.reason || 'no reason specified'}</span>`;
+                }
+            }
+
+            // For reasons I don't understand, importing login.js makes these
+            // functions become undefined outside of this script block, so
+            // this workaround forces them to be global.
+            window.toggleResolved = toggleResolved;
+            window.displayTicket = displayTicket;
+        </script>
+
+        <script type="module" src="/scripts/login.js"></script>
+        <script type="module">
+            const id = location.pathname.split("/").at(-1);
+            document.getElementById("ticket-id").textContent = id;
+            displayTicket(id);
+        </script>
+    </head>
+
+    <body>
+        <nav>
+            <div>
+                <h1 id="tenant"></h1>
+                <div class="nav-menu">
+                    <div class="option"><a href="/tickets">Tickets</a></div>
+                    <div class="divider option-selected">/</div>
+                    <div class="option option-selected" id="ticket-id">N/A</div>
+                </div>
+            </div>
+            <div id="login-menu"></div>
+        </nav>
+
+        <main>
+            <form class="form-grid" onsubmit="toggleResolved(event)">
+                <label for="customer">Customer</label>
+                <div id="customer"></div>
+
+                <label for="last_updated">Last Updated</label>
+                <div id="last_updated"></div>
+
+                <label for="description">Description</label>
+                <div id="description"></div>
+
+                <label for="resolved">Resolved</label>
+                <div id="resolved"></div>
+
+                <div>
+                    <button id="ticket-resolve-button" type="submit"></button>
+                </div>
+                <div id="message"></div>
+            </form>
+        </main>
+    </body>
+</html>

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import { OPAClient } from "@styra/opa";
-import { AuthzProvider, useAuthz } from "@styra/opa-react";
+import { OPAClient } from "@open-policy-agent/opa";
+import { AuthzProvider, useAuthz } from "@open-policy-agent/opa-react";
 import PixelGrid from "react-pixel-grid";
 import {
   Code,

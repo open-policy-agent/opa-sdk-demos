@@ -5,7 +5,7 @@ export default function Root() {
   return (
     <Page>
       <Text h1>
-        <Code>@styra/opa-react</Code> Demos
+        <Code>@open-policy-agent/opa-react</Code> Demos
       </Text>
       <Grid.Container gap={1.5}>
         <Grid xs={12} justify="center">
@@ -15,7 +15,7 @@ export default function Root() {
             </Text>
             <Text>
               This demo shows the batching support in{" "}
-              <Code>@styra/opa-react</Code>
+              <Code>@open-policy-agent/opa-react</Code>
             </Text>
             <Card.Footer>
               <Link color to="batch">
@@ -29,7 +29,7 @@ export default function Root() {
         <Link
           color
           target="_blank"
-          href="https://github.com/StyraInc/opa-typescript/tree/main/examples/opa-react-demo"
+          to="https://github.com/open-policy-agent/opa-sdk-demos/tree/main/opa-react-demo"
         >
           Visit source code on GitHub.
         </Link>

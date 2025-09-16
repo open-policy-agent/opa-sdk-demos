@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { OPAClient, Result } from '@styra/opa';
+import { OPAClient, Result } from '@open-policy-agent/opa';
 
 @Injectable()
 export class AuthzService {

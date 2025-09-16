@@ -9,7 +9,7 @@ import {
   AUTHZ_PATH,
   Request,
 } from './decorators/action';
-import { Input, ToInput, Result } from '@styra/opa';
+import { Input, ToInput, Result } from '@open-policy-agent/opa';
 
 class InputPayload implements ToInput {
   private input: Input;

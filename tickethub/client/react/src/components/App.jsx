@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Outlet, useSearchParams } from "react-router-dom";
 import Nav from "./Nav";
 import { useAuthn } from "../AuthnContext";
-import { AuthzProvider } from "@styra/opa-react";
-import { OPAClient } from "@styra/opa";
+import { AuthzProvider } from "@open-policy-agent/opa-react";
+import { OPAClient } from "@open-policy-agent/opa";
 
 import { Types } from "../types";
 import "../style.css";

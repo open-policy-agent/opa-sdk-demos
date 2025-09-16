@@ -1,4 +1,4 @@
-import { Input, ToInput } from "@styra/opa";
+import { Input, ToInput } from "@open-policy-agent/opa";
 import { loadPolicy, LoadedPolicy, ResultSet } from "./wasm-sdk";
 
 export class WasmSDK {

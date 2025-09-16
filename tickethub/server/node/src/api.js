@@ -3,7 +3,7 @@ import { Router } from "express";
 import { param } from "express-validator";
 import { PrismaClient } from "@prisma/client";
 
-import { OPAClient } from "@styra/opa";
+import { OPAClient } from "@open-policy-agent/opa";
 
 // all routes in this router is prefixed with /api, see ./server.js:42
 export const router = Router();

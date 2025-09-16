@@ -1,5 +1,5 @@
 {
-  "name": "styra-tickethub-js",
+  "name": "opa-tickethub-js",
   "version": "0.3.0",
   "type": "module",
   "scripts": {
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.8.1",
-    "@styra/opa": "^1.7.10",
+    "@open-policy-agent/opa": "^1.7.10",
     "@ucast/core": "^1.10.2",
     "command-line-args": "^6.0.1",
     "dotenv": "^17.1.0",

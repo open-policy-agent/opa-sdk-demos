@@ -11,5 +11,5 @@ This is an SDK for using OPA's Wasm modules from TS/JS projects.
 It's a slight departure from `@open-policy-agent/npm-opa-wasm` to allow for
 experimentation, and removing legacy/compatibility extras.
 
-It exposes the same interface as `@styra/opa`, so it can be used as a drop-in
+It exposes the same interface as `@open-policy-agent/opa`, so it can be used as a drop-in
 replacement.

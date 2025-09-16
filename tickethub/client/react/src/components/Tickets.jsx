@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthn } from "../AuthnContext";
-import { Authz } from "@styra/opa-react";
+import { Authz } from "@open-policy-agent/opa-react";
 import Assignee from "./Assignee";
 
 export default function Tickets() {

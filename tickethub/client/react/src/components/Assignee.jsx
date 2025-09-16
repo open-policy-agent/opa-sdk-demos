@@ -1,6 +1,6 @@
 import { useAuthn } from "../AuthnContext";
 import { useUsers } from "../UsersContext";
-import { useAuthz } from "@styra/opa-react";
+import { useAuthz } from "@open-policy-agent/opa-react";
 
 export default function Assignee({ ticket }) {
   const { user, tenant } = useAuthn();

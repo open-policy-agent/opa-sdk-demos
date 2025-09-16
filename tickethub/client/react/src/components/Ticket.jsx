@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useAuthn } from "../AuthnContext";
-import { Authz } from "@styra/opa-react";
+import { Authz } from "@open-policy-agent/opa-react";
 import Assignee from "./Assignee";
 
 const loadTicket = async (ticketId, user, tenant, setTicket) => {

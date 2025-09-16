@@ -13,8 +13,8 @@ The TicketHub sample app client component.
 1. `make run`.
 2. The server opens a listener on `0.0.0.0:3000`. Turn a browser to `http://localhost:3000` to see it in action.
 
-All policy evaluations will then use the [`@styra/opa`](https://www.npmjs.com/package/@styra/opa) SDK instance, and make one backend
-call per eval, via [`@styra/opa-react`](https://www.npmjs.com/package/@styra/opa-react).
+All policy evaluations will then use the [`@open-policy-agent/opa`](https://www.npmjs.com/package/@open-policy-agent/opa) SDK instance, and make one backend
+call per eval, via [`@open-policy-agent/opa-react`](https://www.npmjs.com/package/@open-policy-agent/opa-react).
 
 ## How to run (Wasm)
 

@@ -1,5 +1,5 @@
 {
-  "name": "styra-tickethub-react",
+  "name": "opa-tickethub-react",
   "version": "0.3.0",
   "proxy": "http://localhost:4001",
   "scripts": {
@@ -7,8 +7,8 @@
     "build": "react-scripts build"
   },
   "devDependencies": {
-    "@styra/opa": "^1.2.3",
-    "@styra/opa-react": "^0.7.0",
+    "@open-policy-agent/opa": "^1.2.3",
+    "@open-policy-agent/opa-react": "^0.7.0",
     "opa-wasm": "file:./packages/opa-wasm",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

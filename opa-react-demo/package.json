@@ -7,7 +7,7 @@
   "dependencies": {
     "@geist-ui/core": "latest",
     "@geist-ui/react": "latest",
-    "@styra/opa-react": "latest",
+    "@open-policy-agent/opa-react": "latest",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",

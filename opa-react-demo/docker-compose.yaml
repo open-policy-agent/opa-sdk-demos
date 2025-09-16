@@ -7,7 +7,7 @@ services:
       - eopa
 
   eopa:
-    image: ghcr.io/styrainc/enterprise-opa:latest
+    image: ghcr.io/open-policy-agent/eopa:latest
     pull_policy: always
     ports:
       - "8181:8181"
@@ -19,5 +19,3 @@ services:
       - /policies
     volumes:
       - ./policies:/policies
-    environment:
-      EOPA_LICENSE_KEY: ${EOPA_LICENSE_KEY}

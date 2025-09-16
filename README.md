@@ -11,9 +11,9 @@ The application presents a simple REST based object store implemented using Spri
 
 ## [OPA React Demo](opa-react-demo)
 
-This demo app serves as an example of some [`@styra/opa-react`](https://www.npmjs.com/package/@styra/opa-react) features, like batching.
+This demo app serves as an example of some [`@open-policy-agent/opa-react`](https://www.npmjs.com/package/@open-policy-agent/opa-react) features, like batching.
 
 
 ## [NestJS demo](nestjs-demo)
 
-This demo app shows how [`@styra/opa`](https://www.npmjs.com/package/@styra/opa) can be used in a NestJS backend service.
+This demo app shows how [`@open-policy-agent/opa`](https://www.npmjs.com/package/@open-policy-agent/opa) can be used in a NestJS backend service.

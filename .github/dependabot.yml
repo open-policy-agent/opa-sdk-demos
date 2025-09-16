@@ -3,7 +3,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "opa-react-demo/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       all:
         patterns:
@@ -11,7 +11,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "nestjs-demo/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     groups:
       all:
         patterns:
@@ -19,78 +19,73 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
   # TicketHub Dependencies:
   - package-ecosystem: "npm"
     directory: "/tickethub/server/node"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
     groups:
-      prisma:
+      all:
         patterns:
-          - "*prisma*"
+          - "*"
   - package-ecosystem: "gradle"
     directory: "/tickethub/server/java"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
     groups:
-      jackson:
+      all:
         patterns:
-          - "com.fasterxml.jackson*"
-      slf4j:
-        patterns:
-          - "org.slf4j:*"
+          - "*"
     ignore: # server/java doesn't compile when bumping these
       - dependency-name: "org.eclipse.jetty:*"
       - dependency-name: "org.glassfish.jersey.*"
   - package-ecosystem: "gradle"
     directory: "/tickethub/server/springboot"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
     groups:
-      jackson:
+      all:
         patterns:
-          - "com.fasterxml.jackson*"
-      slf4j:
-        patterns:
-          - "org.slf4j:*"
+          - "*"
   - package-ecosystem: "nuget"
     directory: "/tickethub/server/csharp"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
     groups:
-      Microsoft:
+      all:
         patterns:
-          - "Microsoft*"
-      Npgsql:
-        patterns:
-          - "Npgsql*"
+          - "*"
   - package-ecosystem: "npm"
     directory: "/tickethub/client/react"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
     groups:
-      react:
+      all:
         patterns:
-          - "react*"
+          - "*"
   - package-ecosystem: "npm"
     directory: "/tickethub/client/html"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
+    groups:
+      all:
+        patterns:
+          - "*"
   - package-ecosystem: github-actions
     directory: /tickethub/
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: "npm"
     directory: "/tickethub/tests/e2e"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     open-pull-requests-limit: 10
     groups:
       all:

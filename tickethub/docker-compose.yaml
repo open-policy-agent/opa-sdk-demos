@@ -128,7 +128,7 @@ services:
       - opa
 
   opa:
-    image: ${EOPA_IMAGE:-ghcr.io/styrainc/enterprise-opa:latest}
+    image: ${EOPA_IMAGE:-ghcr.io/open-policy-agent/eopa:latest}
     pull_policy: always
     ports:
       - "8181:8181"
@@ -137,15 +137,12 @@ services:
       - --server
       - --addr=:8181
       - --log-level=debug
-      - --no-license-fallback
       - --set=decision_logs.console=true
       - --bundle
       - /policies
     working_dir: /
     volumes:
       - ./policies:/policies
-    environment:
-      EOPA_LICENSE_KEY: ${EOPA_LICENSE_KEY}
 
   integration-tests:
     image: ghcr.io/orange-opensource/hurl:latest
